@@ -15,7 +15,8 @@ const zonasData = {
     veredicto: "evitar",
     ocupacion: 70,
     mora: 7.0,
-    descripcion: "Hay demasiados deptos vacíos. 3 de cada 10 no tienen inquilino. Muchos dueños compitiendo por pocos interesados."
+    descripcion: "Hay demasiados deptos vacíos. 3 de cada 10 no tienen inquilino. Muchos dueños compitiendo por pocos interesados.",
+    limites: "Triángulo entre 2do y 4to Anillo, entre Av. San Martín y Canal Isuto"
   },
   norte_2_5: {
     nombre: "Norte (2do-5to)",
@@ -27,7 +28,8 @@ const zonasData = {
     veredicto: "precaucion",
     ocupacion: 88,
     mora: 6.6,
-    descripcion: "Zona con bastantes deptos vacíos. Hay que elegir muy bien el edificio y ubicación exacta."
+    descripcion: "Zona con bastantes deptos vacíos. Hay que elegir muy bien el edificio y ubicación exacta.",
+    limites: "Eje Av. Banzer/Cristo Redentor, Av. Beni y Av. Alemana, desde 2do hasta 5to Anillo"
   },
   norte_5_8: {
     nombre: "Norte (5to-8vo)",
@@ -39,7 +41,8 @@ const zonasData = {
     veredicto: "precaucion",
     ocupacion: 94,
     mora: 13.9,
-    descripcion: "Buena ocupación pero mora alta (13.9%). Zona en consolidación."
+    descripcion: "Se alquila bien pero mucha gente tiene problemas para pagar. Zona que está creciendo.",
+    limites: "Más allá del 5to anillo, eje Av. Banzer y G77. Incluye zona Remanso"
   },
   sur: {
     nombre: "Zona Sur",
@@ -51,7 +54,8 @@ const zonasData = {
     veredicto: "invertir",
     ocupacion: 95,
     mora: 13.9,
-    descripcion: "Excelente ocupación. Mejor relación precio-rentabilidad de la ciudad."
+    descripcion: "Casi todos los deptos están alquilados. Precios accesibles y buena ganancia.",
+    limites: "Cono sur después del 4to Anillo, Av. Santos Dumont, zona Refinería, Doble Vía La Guardia desde Km 6/7"
   },
   este: {
     nombre: "Zona Este",
@@ -63,7 +67,8 @@ const zonasData = {
     veredicto: "invertir",
     ocupacion: 96,
     mora: 12.6,
-    descripcion: "El Cap Rate más alto de Santa Cruz (11.3%). Demanda real de familias."
+    descripcion: "Donde más rápido recuperás tu inversión. Familias reales buscando donde vivir.",
+    limites: "Salida hacia Cotoca, Av. Virgen de Cotoca y Villa Primero de Mayo"
   },
   oeste: {
     nombre: "Zona Oeste",
@@ -75,7 +80,8 @@ const zonasData = {
     veredicto: "invertir",
     ocupacion: 95,
     mora: 6.0,
-    descripcion: "Buena ocupación y mora controlada. Equilibrio precio-estabilidad."
+    descripcion: "Casi todos los deptos ocupados y los inquilinos pagan bien. Equilibrio entre precio y estabilidad.",
+    limites: "Cuadrante oeste desde 4to Anillo, corredor Radial 17½, inicio Doble Vía La Guardia hasta 6to anillo, zona adyacente al Río Piraí"
   },
   norte_sub: {
     nombre: "Norte Suburbano",
@@ -87,7 +93,8 @@ const zonasData = {
     veredicto: "invertir",
     ocupacion: 92,
     mora: 7.9,
-    descripcion: "Alto Cap Rate (10.7%) con precio accesible. Segunda mejor rentabilidad."
+    descripcion: "Recuperás tu plata rápido y el precio es accesible. Segunda mejor zona para invertir.",
+    limites: "Desarrollos satélites más allá del 8vo-9no anillo, Valle Sánchez y zonas de Warnes"
   }
 };
 
@@ -118,6 +125,7 @@ export default function App() {
   const [zonaCompare1, setZonaCompare1] = useState('equipetrol');
   const [zonaCompare2, setZonaCompare2] = useState('este');
   const [metrosCuadrados, setMetrosCuadrados] = useState(60);
+  const [showGuia, setShowGuia] = useState(false);
 
   const tabs = [
     { id: 'inicio', label: 'Inicio' },
@@ -125,7 +133,7 @@ export default function App() {
     { id: 'mapa', label: 'Mapa' },
     { id: 'simulador', label: 'Simular' },
     { id: 'comparar', label: 'VS' },
-    { id: 'mora', label: 'Mora' },
+    { id: 'mora', label: 'Pagos' },
     { id: 'predicciones', label: '2026' }
   ];
 
@@ -139,6 +147,10 @@ export default function App() {
   const calcularPayback = (zona) => {
     const data = zonasData[zona];
     return (data.precio / (data.alquiler * 12)).toFixed(1);
+  };
+
+  const calcularAnosRecuperacion = (capRate) => {
+    return Math.round(100 / capRate);
   };
 
   return (
@@ -175,24 +187,44 @@ export default function App() {
             <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Tu copiloto inmobiliario en Santa Cruz</p>
           </div>
         </div>
-        <button 
-          onClick={() => window.open('/simon-inteligencia-inmobiliaria-dic2025.pdf', '_blank')}
-          style={{
-            background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '10px 16px',
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '13px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-        >
-          📄 PDF Gratis
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => setShowGuia(true)}
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              color: 'white',
+              fontWeight: '600',
+              fontSize: '13px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            📖 Guía
+          </button>
+          <button
+            onClick={() => window.open('/simon-inteligencia-inmobiliaria-dic2025.pdf', '_blank')}
+            style={{
+              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              color: 'white',
+              fontWeight: '600',
+              fontSize: '13px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            📄 PDF Gratis
+          </button>
+        </div>
       </header>
 
       {/* Tabs */}
@@ -330,8 +362,8 @@ export default function App() {
                 padding: '20px',
                 border: '1px solid rgba(255,255,255,0.06)'
               }}>
-                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Mora Hipotecaria</p>
-                <p style={{ color: '#3b82f6', fontSize: '28px', fontWeight: '700', margin: 0 }}>3.9%</p>
+                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>No pueden pagar cuota</p>
+                <p style={{ color: '#3b82f6', fontSize: '28px', fontWeight: '700', margin: 0 }}>4 de cada 100</p>
               </div>
               <div style={{
                 background: 'rgba(255,255,255,0.03)',
@@ -339,8 +371,8 @@ export default function App() {
                 padding: '20px',
                 border: '1px solid rgba(255,255,255,0.06)'
               }}>
-                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Mejor Cap Rate</p>
-                <p style={{ color: '#10b981', fontSize: '28px', fontWeight: '700', margin: 0 }}>11.3%</p>
+                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Mejor zona</p>
+                <p style={{ color: '#10b981', fontSize: '28px', fontWeight: '700', margin: 0 }}>Recuperás en {calcularAnosRecuperacion(11.3)} años</p>
               </div>
               <div style={{
                 background: 'rgba(255,255,255,0.03)',
@@ -348,8 +380,8 @@ export default function App() {
                 padding: '20px',
                 border: '1px solid rgba(255,255,255,0.06)'
               }}>
-                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Vacancia Equipetrol</p>
-                <p style={{ color: '#ef4444', fontSize: '28px', fontWeight: '700', margin: 0 }}>30%</p>
+                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Deptos vacíos Equipetrol</p>
+                <p style={{ color: '#ef4444', fontSize: '28px', fontWeight: '700', margin: 0 }}>30 de cada 100</p>
               </div>
             </div>
 
@@ -361,12 +393,10 @@ export default function App() {
               border: '1px solid rgba(34, 197, 94, 0.2)'
             }}>
               <h3 style={{ color: '#22c55e', margin: '0 0 12px 0', fontSize: '16px' }}>
-                💡 Dato clave: Quien compró en Feb 2025 duplicó
+                💡 Quien compró en Feb 2025 hoy tiene el DOBLE
               </h3>
               <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0, lineHeight: '1.6' }}>
-                Precio real tocó piso en <strong style={{ color: 'white' }}>$645/m²</strong> (Feb 2025). 
-                Hoy está en <strong style={{ color: 'white' }}>$1,329/m²</strong>. 
-                Recuperación del <strong style={{ color: '#22c55e' }}>+106%</strong> en 10 meses.
+                En febrero el metro cuadrado costaba $645. Hoy vale $1,329. Eso es +106% en 10 meses.
               </p>
             </div>
 
@@ -378,7 +408,7 @@ export default function App() {
               padding: '20px',
               border: '1px solid rgba(255,255,255,0.06)'
             }}>
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>🏆 Top Zonas por Rentabilidad</h3>
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>🏆 Donde más rápido recuperás tu plata</h3>
               {[
                 { zona: 'este', medal: '🥇' },
                 { zona: 'norte_sub', medal: '🥈' },
@@ -393,7 +423,7 @@ export default function App() {
                 }}>
                   <span style={{ fontSize: '14px' }}>{medal} {zonasData[zona].nombre}</span>
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ color: '#22c55e', fontWeight: '700' }}>{zonasData[zona].capRate}% Cap</span>
+                    <span style={{ color: '#22c55e', fontWeight: '700' }}>~{calcularAnosRecuperacion(zonasData[zona].capRate)} años</span>
                     <span style={{ color: '#64748b', marginLeft: '12px', fontSize: '13px' }}>${zonasData[zona].precio}/m²</span>
                   </div>
                 </div>
@@ -421,7 +451,7 @@ export default function App() {
                   <li>Inflación acumulada ~20% (no transables)</li>
                   <li>Tipo de cambio paralelo ~Bs 10.36</li>
                   <li>Déficit fiscal sostenido desde 2012</li>
-                  <li>Mora hipotecaria en ascenso: 3.9%</li>
+                  <li>Gente que no puede pagar cuotas: 4 de cada 100 (subiendo)</li>
                 </ul>
               </div>
 
@@ -436,7 +466,7 @@ export default function App() {
                 <ul style={{ margin: 0, paddingLeft: '20px', color: '#cbd5e1', fontSize: '14px', lineHeight: '1.8' }}>
                   <li>Precio real recuperó: $1,329/m² (+106% vs piso)</li>
                   <li>Stock en venta cayó 40% (2,791 unidades)</li>
-                  <li>Cap Rate general: 6.2% (zonas periféricas &gt;10%)</li>
+                  <li>Recuperación promedio: 16 años (en zonas alejadas ~9 años)</li>
                   <li>Ladrillo como resguardo de valor</li>
                 </ul>
               </div>
@@ -462,8 +492,9 @@ export default function App() {
                 padding: '20px',
                 border: '1px solid rgba(255,255,255,0.06)'
               }}>
-                <h3 style={{ margin: '0 0 20px 0', fontSize: '16px' }}>📊 Evolución Precio Real $/m²</h3>
-                
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '16px' }}>📊 Evolución Precio Real $/m²</h3>
+                <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 16px 0' }}>(Precio en USD ajustado por tipo de cambio paralelo)</p>
+
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '180px', marginBottom: '12px' }}>
                   {[
                     { mes: 'Ago 22', valor: 1176, color: '#64748b' },
@@ -556,18 +587,27 @@ export default function App() {
                       textAlign: 'left'
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <span style={{ fontWeight: '600', fontSize: '14px' }}>{data.nombre}</span>
-                      <span style={{ 
-                        fontSize: '11px', 
-                        padding: '4px 8px', 
+                      <span style={{
+                        fontSize: '11px',
+                        padding: '4px 8px',
                         borderRadius: '100px',
                         backgroundColor: colorBg,
-                        color: 'white'
+                        color: 'white',
+                        flexShrink: 0
                       }}>
-                        {data.capRate}%
+                        ~{calcularAnosRecuperacion(data.capRate)}a
                       </span>
                     </div>
+                    <p style={{
+                      margin: '6px 0 0 0',
+                      fontSize: '11px',
+                      color: '#64748b',
+                      lineHeight: '1.3'
+                    }}>
+                      📍 {data.limites}
+                    </p>
                   </button>
                 );
               })}
@@ -608,12 +648,12 @@ export default function App() {
                     <p style={{ color: '#c084fc', fontSize: '22px', fontWeight: '700', margin: 0 }}>${zonasData[zonaSeleccionada].precio}</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Cap Rate</p>
-                    <p style={{ color: '#22c55e', fontSize: '22px', fontWeight: '700', margin: 0 }}>{zonasData[zonaSeleccionada].capRate}%</p>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Recuperación</p>
+                    <p style={{ color: '#22c55e', fontSize: '22px', fontWeight: '700', margin: 0 }}>~{calcularAnosRecuperacion(zonasData[zonaSeleccionada].capRate)} años</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Vacancia</p>
-                    <p style={{ color: '#60a5fa', fontSize: '22px', fontWeight: '700', margin: 0 }}>{zonasData[zonaSeleccionada].vacancia}%</p>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Deptos vacíos</p>
+                    <p style={{ color: '#60a5fa', fontSize: '22px', fontWeight: '700', margin: 0 }}>{zonasData[zonaSeleccionada].vacancia} de 100</p>
                   </div>
                 </div>
 
@@ -624,8 +664,8 @@ export default function App() {
                     <p style={{ color: '#fbbf24', fontSize: '18px', fontWeight: '600', margin: 0 }}>${zonasData[zonaSeleccionada].alquiler}</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Mora zona</p>
-                    <p style={{ color: '#f87171', fontSize: '18px', fontWeight: '600', margin: 0 }}>{zonasData[zonaSeleccionada].mora}%</p>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Cuotas atrasadas</p>
+                    <p style={{ color: '#f87171', fontSize: '18px', fontWeight: '600', margin: 0 }}>{zonasData[zonaSeleccionada].mora} de 100</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 4px 0' }}>Stock venta</p>
@@ -681,6 +721,10 @@ export default function App() {
                 <p style={{ color: '#94a3b8', fontSize: '14px', margin: 0, lineHeight: '1.6' }}>
                   {zonasData[zonaSeleccionada].descripcion}
                 </p>
+
+                <p style={{ color: '#64748b', fontSize: '13px', margin: '12px 0 0 0', lineHeight: '1.5' }}>
+                  📍 {zonasData[zonaSeleccionada].limites}
+                </p>
               </div>
             )}
           </div>
@@ -719,7 +763,7 @@ export default function App() {
                     }}
                   >
                     <p style={{ margin: 0, fontWeight: '600', fontSize: '13px' }}>{data.nombre}</p>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.7 }}>{data.capRate}% Cap • ${data.precio}/m²</p>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.7 }}>~{calcularAnosRecuperacion(data.capRate)}a • ${data.precio}/m²</p>
                   </button>
                 ))}
               </div>
@@ -789,8 +833,8 @@ export default function App() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '20px' }}>
                     <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
-                      <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Cap Rate</p>
-                      <p style={{ color: colors.text, fontSize: '24px', fontWeight: '700', margin: '4px 0 0 0' }}>{zona.capRate}%</p>
+                      <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Recuperación</p>
+                      <p style={{ color: colors.text, fontSize: '24px', fontWeight: '700', margin: '4px 0 0 0' }}>~{calcularAnosRecuperacion(zona.capRate)} años</p>
                     </div>
                     <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '10px', padding: '14px', textAlign: 'center' }}>
                       <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Payback</p>
@@ -800,13 +844,9 @@ export default function App() {
 
                   <button
                     onClick={() => {
-                      const texto = `🏠 Mi análisis SCZ:\n\n📍 ${zona.nombre} + ${tipologiaData[tipoSeleccionado].nombre}\n${resultado === 'invertir' ? '✅' : resultado === 'precaucion' ? '⚠️' : '❌'} ${resultado === 'invertir' ? 'RECOMENDADO' : resultado === 'precaucion' ? 'ANALIZAR' : 'NO RECOMENDADO'}\n\n💰 Cap Rate: ${zona.capRate}%\n🏢 Vacancia: ${zona.vacancia}%\n💵 Precio: $${zona.precio}/m²\n⏱️ Payback: ${calcularPayback(zonaSeleccionada)} años\n\n📊 Fuente: Citrino Dic 2025`;
-                      if (navigator.share) {
-                        navigator.share({ text: texto });
-                      } else {
-                        navigator.clipboard.writeText(texto);
-                        alert('¡Copiado! Pegalo en WhatsApp.');
-                      }
+                      const texto = `🏠 Mi análisis SCZ:\n\n📍 ${zona.nombre} + ${tipologiaData[tipoSeleccionado].nombre}\n${resultado === 'invertir' ? '✅' : resultado === 'precaucion' ? '⚠️' : '❌'} ${resultado === 'invertir' ? 'RECOMENDADO' : resultado === 'precaucion' ? 'ANALIZAR' : 'NO RECOMENDADO'}\n\n💰 Recuperación: ~${calcularAnosRecuperacion(zona.capRate)} años\n🏢 Deptos vacíos: ${zona.vacancia} de 100\n💵 Precio: $${zona.precio}/m²\n⏱️ Payback: ${calcularPayback(zonaSeleccionada)} años\n\n📊 Fuente: Simón Intel\n\n🔗 Ver más: https://simon-intel.vercel.app`;
+                      const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+                      window.open(url, '_blank');
                     }}
                     style={{
                       width: '100%',
@@ -916,11 +956,11 @@ export default function App() {
               border: '1px solid rgba(255,255,255,0.08)'
             }}>
               {[
-                { label: 'Cap Rate', key: 'capRate', suffix: '%', higherBetter: true },
-                { label: 'Vacancia', key: 'vacancia', suffix: '%', higherBetter: false },
+                { label: 'Años recuperar', key: 'capRate', suffix: '%', higherBetter: true },
+                { label: 'Deptos vacíos', key: 'vacancia', suffix: '%', higherBetter: false },
                 { label: 'Precio/m²', key: 'precio', prefix: '$', higherBetter: false },
                 { label: 'Alquiler/m²', key: 'alquiler', prefix: '$', higherBetter: true },
-                { label: 'Mora', key: 'mora', suffix: '%', higherBetter: false },
+                { label: 'Cuotas atrasadas', key: 'mora', suffix: '%', higherBetter: false },
               ].map(({ label, key, suffix, prefix, higherBetter }) => {
                 const v1 = zonasData[zonaCompare1][key];
                 const v2 = zonasData[zonaCompare2][key];
@@ -960,7 +1000,7 @@ export default function App() {
 
               {/* Ganador */}
               <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Recomendación por Cap Rate</p>
+                <p style={{ color: '#64748b', fontSize: '13px', margin: '0 0 8px 0' }}>Dónde recuperás más rápido</p>
                 <div style={{
                   display: 'inline-block',
                   padding: '12px 28px',
@@ -981,7 +1021,7 @@ export default function App() {
         {/* ==================== TAB: MORA ==================== */}
         {tab === 'mora' && (
           <div>
-            <h2 style={{ textAlign: 'center', fontSize: '24px', margin: '0 0 8px 0' }}>⚠️ Mapa de Mora</h2>
+            <h2 style={{ textAlign: 'center', fontSize: '24px', margin: '0 0 8px 0' }}>⚠️ Dónde no pueden pagar cuotas</h2>
             <p style={{ textAlign: 'center', color: '#64748b', marginBottom: '24px' }}>Riesgo hipotecario por zona</p>
 
             {/* Alerta */}
@@ -1004,7 +1044,7 @@ export default function App() {
               padding: '20px',
               border: '1px solid rgba(255,255,255,0.06)'
             }}>
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>📊 Ranking por Mora Hipotecaria</h3>
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '16px' }}>📊 Zonas con más cuotas atrasadas</h3>
               
               {Object.entries(zonasData)
                 .sort((a, b) => b[1].mora - a[1].mora)
@@ -1169,6 +1209,222 @@ export default function App() {
           Herramienta educativa • No constituye asesoría de inversión
         </p>
       </footer>
+
+      {/* Modal Guía */}
+      {showGuia && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.85)',
+          zIndex: 1000,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px'
+        }}>
+          <div style={{
+            backgroundColor: '#0f172a',
+            borderRadius: '16px',
+            maxWidth: '600px',
+            width: '100%',
+            maxHeight: '85vh',
+            overflow: 'auto',
+            border: '1px solid rgba(255,255,255,0.1)',
+            position: 'relative'
+          }}>
+            {/* Header del modal */}
+            <div style={{
+              padding: '20px',
+              borderBottom: '1px solid rgba(255,255,255,0.1)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              position: 'sticky',
+              top: 0,
+              backgroundColor: '#0f172a',
+              zIndex: 1
+            }}>
+              <h2 style={{ margin: 0, fontSize: '20px', color: 'white' }}>📖 Guía de Simón</h2>
+              <button
+                onClick={() => setShowGuia(false)}
+                style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  border: 'none',
+                  borderRadius: '8px',
+                  width: '36px',
+                  height: '36px',
+                  color: 'white',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ padding: '20px' }}>
+              {/* SECCIÓN 1 */}
+              <h3 style={{ color: '#60a5fa', margin: '0 0 16px 0', fontSize: '18px' }}>📊 Cómo usar Simón</h3>
+
+              {/* Card 1 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                border: '1px solid rgba(255,255,255,0.06)'
+              }}>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Entendé el panorama</h4>
+                <p style={{ color: '#94a3b8', margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                  Simón te muestra promedios por zona, no verdades absolutas. Usalo para saber POR DÓNDE empezar a buscar.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                border: '1px solid rgba(255,255,255,0.06)'
+              }}>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Qué significan los colores</h4>
+                <div style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.8' }}>
+                  <div>🟢 Verde = La zona en general tiene buenos números</div>
+                  <div>🟡 Amarillo = Hay factores mixtos, analizá bien</div>
+                  <div>🔴 Rojo = Los promedios no son favorables, pero puede haber excepciones</div>
+                </div>
+              </div>
+
+              {/* Card 3 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                border: '1px solid rgba(255,255,255,0.06)'
+              }}>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Las zonas rojas no son prohibidas</h4>
+                <p style={{ color: '#94a3b8', margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                  Son zonas donde hay que tener MÁS cuidado. Puede haber oportunidades específicas en cualquier zona.
+                </p>
+              </div>
+
+              {/* Card 4 */}
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '24px',
+                border: '1px solid rgba(139, 92, 246, 0.2)'
+              }}>
+                <h4 style={{ color: '#a78bfa', margin: '0 0 8px 0', fontSize: '15px' }}>🚧 Próximamente</h4>
+                <p style={{ color: '#94a3b8', margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                  Análisis por edificio específico, comparador de proyectos, y más. Simón está evolucionando.
+                </p>
+              </div>
+
+              {/* Card 5 */}
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '24px',
+                border: '1px solid rgba(34, 197, 94, 0.2)'
+              }}>
+                <h4 style={{ color: '#4ade80', margin: '0 0 8px 0', fontSize: '15px' }}>📈 Por qué suben los precios</h4>
+                <p style={{ color: '#94a3b8', margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                  Construir cuesta 54% más que hace 2 años (Índice ICC-CBDI Dic 2025). Esto significa menos proyectos nuevos y precios que siguen subiendo. Quien compra hoy, compra antes de que suba más.
+                </p>
+              </div>
+
+              {/* SECCIÓN 2 */}
+              <h3 style={{ color: '#22c55e', margin: '0 0 16px 0', fontSize: '18px' }}>👤 Ejemplo real: Cómo Juan usó Simón</h3>
+
+              {/* Paso 1 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                border: '1px solid rgba(255,255,255,0.06)'
+              }}>
+                <div style={{ color: '#60a5fa', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>PASO 1</div>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Miró el panorama</h4>
+                <p style={{ color: '#94a3b8', margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                  Vio que Equipetrol tiene 30 de cada 100 deptos vacíos (mucha competencia). Zona Este recuperás tu plata en ~9 años (la más rápida).
+                </p>
+              </div>
+
+              {/* Paso 2 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                border: '1px solid rgba(255,255,255,0.06)'
+              }}>
+                <div style={{ color: '#60a5fa', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>PASO 2</div>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Filtró por presupuesto ($45,000 USD)</h4>
+                <div style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.8' }}>
+                  <div>• Equipetrol $1,329/m² → alcanza ~34m² (muy chico)</div>
+                  <div>• Zona Este $552/m² → alcanza ~81m² (2 dormitorios)</div>
+                  <div>• Zona Sur $618/m² → alcanza ~73m² (2 dormitorios)</div>
+                </div>
+              </div>
+
+              {/* Paso 3 */}
+              <div style={{
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '12px',
+                border: '1px solid rgba(255,255,255,0.06)'
+              }}>
+                <div style={{ color: '#60a5fa', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>PASO 3</div>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Comparó riesgos</h4>
+                <div style={{ color: '#94a3b8', fontSize: '14px', lineHeight: '1.8' }}>
+                  <div>• Este: 4 de 100 vacíos, pero 9 de 100 con cuotas atrasadas</div>
+                  <div>• Sur: 7 de 100 vacíos, solo 4 de 100 con cuotas atrasadas</div>
+                </div>
+              </div>
+
+              {/* Paso 4 */}
+              <div style={{
+                background: 'rgba(34, 197, 94, 0.1)',
+                borderRadius: '12px',
+                padding: '16px',
+                marginBottom: '24px',
+                border: '1px solid rgba(34, 197, 94, 0.2)'
+              }}>
+                <div style={{ color: '#22c55e', fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>PASO 4</div>
+                <h4 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '15px' }}>Decidió siguiente paso</h4>
+                <p style={{ color: '#94a3b8', margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                  Juan eligió buscar en Zona Sur (buen balance). Ahora toca: visitar edificios específicos, ver constructoras, comparar amenities.
+                </p>
+              </div>
+
+              {/* Disclaimer */}
+              <div style={{
+                background: 'rgba(251, 191, 36, 0.1)',
+                borderRadius: '12px',
+                padding: '16px',
+                border: '1px solid rgba(251, 191, 36, 0.2)'
+              }}>
+                <p style={{ color: '#fbbf24', margin: 0, fontSize: '13px', lineHeight: '1.5' }}>
+                  ⚠️ Estos son datos generales por zona. Cada edificio y departamento debe analizarse individualmente. Simón te orienta, no decide por vos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
