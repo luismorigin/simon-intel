@@ -1,0 +1,99 @@
+{
+  "session_id": "2025-01-09-153000",
+  "nombre": "simon-webapp-dos-versiones",
+  "proyecto": "Simón | Inteligencia Inmobiliaria",
+  "objetivo_principal": "Webapp de análisis inmobiliario Santa Cruz Bolivia",
+
+  "progreso": {
+    "completado": [
+      "Webapp v3 con 7 tabs (Inicio, Macro, Mapa, Simular, VS, Mora, 2026)",
+      "Data verificada de Citrino Dic 2025 (7 zonas)",
+      "PDF de 8 páginas con hook de Thiel",
+      "Deploy a Vercel: https://simon-intel.vercel.app",
+      "Branch 'lenguaje-simple' con versión para no inversores",
+      "Branding: Logo S dorado, colores #1e3a5f azul, #10b981 verde",
+      "Brief para marketero",
+      "Prompts para ChatGPT (imagen) y video TikTok"
+    ],
+    "en_progreso": [
+      "Test A/B entre versión técnica y versión simple",
+      "Promoción en redes sociales"
+    ],
+    "pendiente": [
+      "Decidir cuál versión queda (técnica o simple)",
+      "Merge o delete branch lenguaje-simple",
+      "Distribuir en canales ICP (grupos FB, corredores, LinkedIn)"
+    ]
+  },
+
+  "decisiones_clave": [
+    "Una sola webapp, no toggle entre versiones",
+    "Testear con usuarios no técnicos para decidir",
+    "ICP: inversores con $50K+, no amigos random",
+    "Hook principal: 'El 70% de Equipetrol está perdiendo dinero'"
+  ],
+
+  "archivos_modificados": [
+    "src/App.jsx (versión técnica - main)",
+    "src/App.jsx (versión simple - branch lenguaje-simple)",
+    "public/simon-inteligencia-inmobiliaria-dic2025.pdf"
+  ],
+
+  "variables_importantes": {
+    "url_produccion": "https://simon-intel.vercel.app",
+    "repo_github": "https://github.com/luismorigin/simon-intel",
+    "branch_main": "versión técnica (Cap Rate, Vacancia, Mora)",
+    "branch_simple": "versión lenguaje humano (Recuperás en X años)",
+    "whatsapp_contacto": "76308808"
+  },
+
+  "traducciones_lenguaje_simple": {
+    "Cap Rate X%": "Recuperás tu inversión en [100/X] años",
+    "Vacancia X%": "[100-X] de cada 100 deptos están alquilados",
+    "Mora X%": "[X] de cada 100 no pueden pagar su cuota",
+    "Payback": "Años para recuperar tu plata",
+    "Stock X%": "X% de los deptos en venta están en esta zona"
+  },
+
+  "data_zonas": {
+    "este": { "capRate": 11.3, "vacancia": 4, "mora": 12.6, "precio": 552, "veredicto": "invertir" },
+    "norte_sub": { "capRate": 10.7, "vacancia": 8, "mora": 7.9, "precio": 705, "veredicto": "invertir" },
+    "sur": { "capRate": 9.8, "vacancia": 5, "mora": 13.9, "precio": 720, "veredicto": "invertir" },
+    "oeste": { "capRate": 6.5, "vacancia": 5, "mora": 6.0, "precio": 1111, "veredicto": "invertir" },
+    "equipetrol": { "capRate": 6.3, "vacancia": 30, "mora": 7.0, "precio": 2036, "veredicto": "evitar" }
+  },
+
+  "kpis_macro": {
+    "inflacion": "19.69%",
+    "mora_hipotecaria": "3.9%",
+    "mejor_cap_rate": "11.3% (Zona Este)",
+    "vacancia_equipetrol": "30%",
+    "precio_piso_feb25": "$645/m²",
+    "precio_actual_dic25": "$1,329/m²",
+    "recuperacion": "+106%"
+  },
+
+  "canales_icp_identificados": [
+    "Grupos Facebook: Bienes Raíces Santa Cruz, Inversiones Bolivia",
+    "LinkedIn: Gerentes, empresarios, médicos SCZ",
+    "WhatsApp de corredores inmobiliarios",
+    "Bolivianos en el exterior (España, USA)",
+    "Contadores y abogados que asesoran inversores"
+  ],
+
+  "contexto_critico": "Usuarios no entienden jerga técnica (Cap Rate, Mora, Vacancia). La versión simple traduce todo a lenguaje humano. Testear con no inversores antes de decidir cuál publicar.",
+
+  "feedback_mentores": {
+    "thiel": "No dos versiones para siempre. Testea, elige una, mata la otra.",
+    "musk": "Testea esta semana. Decisión viernes. Merge o delete."
+  },
+
+  "proximos_pasos": [
+    "1. Probar versión simple localmente (npm run dev en branch lenguaje-simple)",
+    "2. Mostrar ambas versiones a 3-5 personas no técnicas",
+    "3. Preguntar: ¿Cuál entendés mejor?",
+    "4. Viernes: decidir cuál queda",
+    "5. Merge branch ganadora o delete",
+    "6. Publicar en canales ICP"
+  ]
+}

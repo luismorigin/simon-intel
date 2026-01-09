@@ -15,7 +15,7 @@ const zonasData = {
     veredicto: "evitar",
     ocupacion: 70,
     mora: 7.0,
-    descripcion: "Hay demasiados deptos vacíos. 3 de cada 10 no tienen inquilino. Muchos dueños compitiendo por pocos interesados."
+    descripcion: "Sobreoferta crítica (>15% vacancia). El 30% del stock de dptos en venta está aquí."
   },
   norte_2_5: {
     nombre: "Norte (2do-5to)",
@@ -27,7 +27,7 @@ const zonasData = {
     veredicto: "precaucion",
     ocupacion: 88,
     mora: 6.6,
-    descripcion: "Zona con bastantes deptos vacíos. Hay que elegir muy bien el edificio y ubicación exacta."
+    descripcion: "Zona mixta con vacancia 8-14%. Requiere análisis cuidadoso del proyecto."
   },
   norte_5_8: {
     nombre: "Norte (5to-8vo)",
